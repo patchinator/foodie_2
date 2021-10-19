@@ -13,7 +13,12 @@ import { Button, IconButton } from "@chakra-ui/button";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { ChevronDownIcon, DeleteIcon, StarIcon, ChatIcon } from "@chakra-ui/icons";
+import {
+  ChevronDownIcon,
+  DeleteIcon,
+  StarIcon,
+  ChatIcon,
+} from "@chakra-ui/icons";
 import {
   Accordion,
   AccordionButton,
@@ -35,7 +40,8 @@ const PostCard = (props) => {
   const [likedPost, setLikedPost] = useState(false);
   const [refreshComments, setRefreshComments] = useState(0);
 
-  const enteredCommentRef = useRef("");
+  const enteredCommentRef = useRef();
+  const formRef = useRef();
   const FIREBASE_COMMENTS = process.env.NEXT_PUBLIC_FIREBASE_CM;
   const FIREBASE_LIKES = process.env.NEXT_PUBLIC_FIREBASE_LIKES;
   const FIREBASE_POSTS = process.env.NEXT_PUBLIC_FIREBASE_POSTS;
@@ -116,12 +122,9 @@ const PostCard = (props) => {
   // delete posts from DB
 
   const deletePostHandler = () => {
-    fetch(
-      `${FIREBASE_POSTS}/${props.id}.json?auth=${authCtx.token}`,
-      {
-        method: "DELETE",
-      }
-    ).then((res) => {
+    fetch(`${FIREBASE_POSTS}/${props.id}.json?auth=${authCtx.token}`, {
+      method: "DELETE",
+    }).then((res) => {
       if (res.ok) {
         // remove all comments associated with that post
 
@@ -185,7 +188,10 @@ const PostCard = (props) => {
             postId: props.id,
           }),
           headers: { "Content-Tpye": "application/json" },
-        }).then(refreshCommentsHandler);
+        }).then((res) => {
+          refreshCommentsHandler();
+          formRef.current.reset();
+        });
       } else {
         toast({
           description: "Max characters exceeded.",
@@ -209,9 +215,7 @@ const PostCard = (props) => {
   // fetch all comments from DB
 
   useEffect(() => {
-    fetch(
-      `${FIREBASE_COMMENTS}.json?auth=${authCtx.token}`
-    )
+    fetch(`${FIREBASE_COMMENTS}.json?auth=${authCtx.token}`)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -396,7 +400,7 @@ const PostCard = (props) => {
           <Flex>
             <Divider mb="2" mt="2" />
           </Flex>
-          <form onSubmit={submitCommentHandler}>
+          <form ref={formRef} onSubmit={submitCommentHandler}>
             <FormControl id="text">
               <Flex align="center" justify="space-between">
                 <Avatar
