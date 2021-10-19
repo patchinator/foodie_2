@@ -26,13 +26,14 @@ and server side rendering features extremely useful.
 ## Screenshots
 
 Homepage at lightmode full-screen:
-![alt text](https://github.com/patchinator/foodie_2/blob/master/src/images/images/foodie_readme1.png)
+![alt text](https://github.com/patchinator/foodie_2/blob/main/images/foodie_readme1.png)
+
 
 Homepage at nightmode fullscreen:
-![alt text](https://github.com/patchinator/foodie_2/blob/master/src/images/images/foodie_readme2.png)
+![alt text](https://github.com/patchinator/foodie_2/blob/main/images/foodie_readme2.png)
 
 Homepage at nightmode mobile:
-![alt text](https://github.com/patchinator/foodie_2/blob/master/src/images/images/foodie_readme4.png)
+![alt text](https://github.com/patchinator/foodie_2/blob/main/images/foodie_readme4.png)
 
 Homepage at nightmode:
-![alt text](https://github.com/patchinator/foodie_2/blob/master/src/images/images/foodie_readme3.png)
+![alt text](https://github.com/patchinator/foodie_2/blob/main/images/foodie_readme3.png)
