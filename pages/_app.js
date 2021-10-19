@@ -10,6 +10,10 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <title>Foodie | What are you cooking?</title>
+        <meta
+          name="description"
+          content="A blog-like application for anyone to talk/share their experiences with food."
+        />
       </Head>
       <AuthContextProvider>
         <ChakraProvider>
