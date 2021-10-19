@@ -61,12 +61,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {!isLoggedIn && <Welcome />}
-      {isLoggedIn && (
-        <Background>
-          <PostForm onRefresh={refreshPostsHandler} />
-          <Posts onRefresh={refreshPostsHandler} posts={posts} />
-        </Background>
-      )}
+
+      <Background>
+        {isLoggedIn && <PostForm onRefresh={refreshPostsHandler} />}
+        {isLoggedIn && <Posts onRefresh={refreshPostsHandler} posts={posts} />}
+      </Background>
     </Fragment>
   );
 }

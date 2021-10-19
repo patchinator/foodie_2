@@ -8,13 +8,12 @@ import {
   List,
   ListItem,
   Link,
-  Center,
 } from "@chakra-ui/layout";
 import { Button, IconButton } from "@chakra-ui/button";
 import { useColorModeValue } from "@chakra-ui/color-mode";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { ChevronDownIcon, DeleteIcon, StarIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, DeleteIcon, StarIcon, ChatIcon } from "@chakra-ui/icons";
 import {
   Accordion,
   AccordionButton,
@@ -307,7 +306,7 @@ const PostCard = (props) => {
         bg={themeColor}
         mb="4"
         borderRadius="lg"
-        width={{ base: "100%", sm: "80%", md: "70%", lg: "50%" }}
+        width={{ base: "100%", sm: "80%", md: "70%", lg: "40%" }}
         boxShadow="lg"
       >
         <Flex m="2" justify="space-between" align="center">

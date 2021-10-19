@@ -91,7 +91,7 @@ const Navbar = () => {
                 <ListItem mr="2">
                   <Text
                     fontSize={{
-                      base: "18px",
+                      base: "14px",
                       sm: "20px",
                       md: "24px",
                       lg: "26px",
