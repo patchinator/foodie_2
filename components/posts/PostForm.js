@@ -3,7 +3,6 @@ import AuthContext from "../../store/auth-context";
 
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import {
-  Container,
   Box,
   Button,
   Flex,
@@ -85,7 +84,6 @@ const PostForm = (props) => {
 
   return (
     <Fragment>
-      <Container>
         <Flex
           justify="center"
           align="center"
@@ -96,7 +94,6 @@ const PostForm = (props) => {
             <Button onClick={onOpen} rightIcon={<ChatIcon />}>Post</Button>
           </Box>
         </Flex>
-      </Container>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg={useColorModeValue("green.200", "gray.600")}>

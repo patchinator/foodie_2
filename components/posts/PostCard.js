@@ -8,13 +8,17 @@ import {
   List,
   ListItem,
   Link,
-  Center,
 } from "@chakra-ui/layout";
 import { Button, IconButton } from "@chakra-ui/button";
 import { useColorModeValue } from "@chakra-ui/color-mode";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { ChevronDownIcon, DeleteIcon, StarIcon } from "@chakra-ui/icons";
+import {
+  ChevronDownIcon,
+  DeleteIcon,
+  StarIcon,
+  ChatIcon,
+} from "@chakra-ui/icons";
 import {
   Accordion,
   AccordionButton,
@@ -36,7 +40,8 @@ const PostCard = (props) => {
   const [likedPost, setLikedPost] = useState(false);
   const [refreshComments, setRefreshComments] = useState(0);
 
-  const enteredCommentRef = useRef("");
+  const enteredCommentRef = useRef();
+  const formRef = useRef();
   const FIREBASE_COMMENTS = process.env.NEXT_PUBLIC_FIREBASE_CM;
   const FIREBASE_LIKES = process.env.NEXT_PUBLIC_FIREBASE_LIKES;
   const FIREBASE_POSTS = process.env.NEXT_PUBLIC_FIREBASE_POSTS;
@@ -89,7 +94,8 @@ const PostCard = (props) => {
   const deleteCommentHandler = () => {
     comments.find((comment) => {
       if (comment.postId === props.id)
-        fetch(`${FIREBASE_COMMENTS}${comment.id}.json?auth=${authCtx.token}`, {
+      if (comment.commentUser === authCtx.displayName)
+        fetch(`${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`, {
           method: "DELETE",
         }).then((res) => {
           if (res.ok) {
@@ -117,12 +123,9 @@ const PostCard = (props) => {
   // delete posts from DB
 
   const deletePostHandler = () => {
-    fetch(
-      `${FIREBASE_POSTS}/${props.id}.json?auth=${authCtx.token}`,
-      {
-        method: "DELETE",
-      }
-    ).then((res) => {
+    fetch(`${FIREBASE_POSTS}/${props.id}.json?auth=${authCtx.token}`, {
+      method: "DELETE",
+    }).then((res) => {
       if (res.ok) {
         // remove all comments associated with that post
 
@@ -169,6 +172,7 @@ const PostCard = (props) => {
 
   const submitCommentHandler = (event) => {
     event.preventDefault();
+
     const enteredComment = enteredCommentRef.current.value;
     const currentUser = authCtx.displayName;
     const currentUserEmail = authCtx.email;
@@ -185,7 +189,10 @@ const PostCard = (props) => {
             postId: props.id,
           }),
           headers: { "Content-Tpye": "application/json" },
-        }).then(refreshCommentsHandler);
+        }).then((res) => {
+          refreshCommentsHandler();
+          formRef.current.reset();
+        });
       } else {
         toast({
           description: "Max characters exceeded.",
@@ -209,9 +216,7 @@ const PostCard = (props) => {
   // fetch all comments from DB
 
   useEffect(() => {
-    fetch(
-      `${FIREBASE_COMMENTS}.json?auth=${authCtx.token}`
-    )
+    fetch(`${FIREBASE_COMMENTS}.json?auth=${authCtx.token}`)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -307,7 +312,7 @@ const PostCard = (props) => {
         bg={themeColor}
         mb="4"
         borderRadius="lg"
-        width={{ base: "100%", sm: "80%", md: "70%", lg: "50%" }}
+        width={{ base: "100%", sm: "80%", md: "70%", lg: "40%" }}
         boxShadow="lg"
       >
         <Flex m="2" justify="space-between" align="center">
@@ -396,7 +401,7 @@ const PostCard = (props) => {
           <Flex>
             <Divider mb="2" mt="2" />
           </Flex>
-          <form onSubmit={submitCommentHandler}>
+          <form ref={formRef} onSubmit={submitCommentHandler}>
             <FormControl id="text">
               <Flex align="center" justify="space-between">
                 <Avatar
