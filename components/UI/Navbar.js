@@ -113,14 +113,14 @@ const Navbar = () => {
                   cursor="pointer"
                   _hover={{ bg: "gray.600" }}
                 >
-                  Profile
+                  TODO: Profile
                 </MenuItem>
                 <MenuItem
                   command={<SettingsIcon />}
                   cursor="pointer"
                   _hover={{ bg: "gray.600" }}
                 >
-                  Options
+                  TODO: Options
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem
@@ -136,7 +136,7 @@ const Navbar = () => {
                   cursor="pointer"
                   _hover={{ bg: "gray.600" }}
                 >
-                  About
+                  TODO: About
                 </MenuItem>
                 {isLoggedIn && (
                   <MenuItem
