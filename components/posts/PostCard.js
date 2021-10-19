@@ -94,6 +94,7 @@ const PostCard = (props) => {
   const deleteCommentHandler = () => {
     comments.find((comment) => {
       if (comment.postId === props.id)
+      if (comment.commentUser === authCtx.displayName)
         fetch(`${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`, {
           method: "DELETE",
         }).then((res) => {
