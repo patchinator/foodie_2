@@ -303,10 +303,16 @@ const PostCard = (props) => {
 
   return (
     <Flex justify="center">
-      <Box bg={themeColor} mb="4" borderRadius="lg" width="40%" boxShadow="lg">
-        <Flex m="2" justify="space-between">
+      <Box
+        bg={themeColor}
+        mb="4"
+        borderRadius="lg"
+        width={{ base: "100%", sm: "80%", md: "70%", lg: "50%" }}
+        boxShadow="lg"
+      >
+        <Flex m="2" justify="space-between" align="center">
           <Box>
-            <Flex>
+            <Flex align="center">
               <Avatar name={props.user} size="xs" mr="3">
                 <AvatarBadge
                   borderColor="black"
@@ -316,12 +322,17 @@ const PostCard = (props) => {
                   boxSize="1.25em"
                 />
               </Avatar>
-              <Text fontWeight="bold">
+              <Text
+                fontWeight="bold"
+                fontSize={{ base: "11px", sm: "12px", md: "16px", lg: "18px" }}
+              >
                 {props.user + " " + calculateDate(props.date)}
               </Text>
             </Flex>
           </Box>
-          <Text>{props.email}</Text>
+          <Text fontSize={{ base: "11px", sm: "12px", md: "16px", lg: "18px" }}>
+            {props.email}
+          </Text>
         </Flex>
         <Flex justify="center">
           {props.image && <img src={props.image} alt={props.image} />}
@@ -481,7 +492,7 @@ const PostCard = (props) => {
                     ))}
                 </List>
               </AccordionPanel>
-              {commentLength.length === 0 && (
+              {commentLength === 0 && (
                 <AccordionPanel>
                   <Text textAlign="center">
                     No comments. Be the first to comment!

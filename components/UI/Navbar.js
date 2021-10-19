@@ -67,7 +67,7 @@ const Navbar = () => {
           <Flex justify="center" align="center">
             <Image
               width="120"
-              height="45"
+              height="40"
               src={colorMode === "light" ? logo_black : logo_white}
               alt="foodie logo"
             ></Image>
@@ -89,7 +89,14 @@ const Navbar = () => {
               )}
               {isLoggedIn && (
                 <ListItem mr="2">
-                  <Text fontSize="2xl">
+                  <Text
+                    fontSize={{
+                      base: "18px",
+                      sm: "20px",
+                      md: "24px",
+                      lg: "26px",
+                    }}
+                  >
                     {displayTimeHandler() + displayName}
                   </Text>
                 </ListItem>
@@ -106,14 +113,14 @@ const Navbar = () => {
                   cursor="pointer"
                   _hover={{ bg: "gray.600" }}
                 >
-                  Profile
+                  TODO: Profile
                 </MenuItem>
                 <MenuItem
                   command={<SettingsIcon />}
                   cursor="pointer"
                   _hover={{ bg: "gray.600" }}
                 >
-                  Options
+                  TODO: Options
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem
@@ -129,7 +136,7 @@ const Navbar = () => {
                   cursor="pointer"
                   _hover={{ bg: "gray.600" }}
                 >
-                  About
+                  TODO: About
                 </MenuItem>
                 {isLoggedIn && (
                   <MenuItem
