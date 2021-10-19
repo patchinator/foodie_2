@@ -88,7 +88,7 @@ const PostCard = (props) => {
   const deleteCommentHandler = () => {
     comments.find((comment) => {
       if (comment.postId === props.id)
-        fetch(`${FIREBASE_COMMENTS}${comment.id}.json?auth=${authCtx.token}`, {
+        fetch(`${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`, {
           method: "DELETE",
         }).then((res) => {
           if (res.ok) {
@@ -168,6 +168,7 @@ const PostCard = (props) => {
 
   const submitCommentHandler = (event) => {
     event.preventDefault();
+
     const enteredComment = enteredCommentRef.current.value;
     const currentUser = authCtx.displayName;
     const currentUserEmail = authCtx.email;

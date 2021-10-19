@@ -8,7 +8,7 @@ import Link from 'next/link';
 const Welcome = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <Container position="absolute">
+    <Container>
       <Box mt="10" p="4" bg="blackAlpha.300" borderRadius="lg">
         <Image
           src={colorMode === "light" ? logo_black : logo_white}
