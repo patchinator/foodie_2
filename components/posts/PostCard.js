@@ -37,6 +37,9 @@ const PostCard = (props) => {
   const [refreshComments, setRefreshComments] = useState(0);
 
   const enteredCommentRef = useRef("");
+  const FIREBASE_COMMENTS = process.env.NEXT_PUBLIC_FIREBASE_CM;
+  const FIREBASE_LIKES = process.env.NEXT_PUBLIC_FIREBASE_LIKES;
+  const FIREBASE_POSTS = process.env.NEXT_PUBLIC_FIREBASE_POSTS;
 
   const maxChars = 500;
   const themeColor = useColorModeValue("white", "gray.800");
@@ -86,10 +89,9 @@ const PostCard = (props) => {
   const deleteCommentHandler = () => {
     comments.find((comment) => {
       if (comment.postId === props.id)
-        fetch(
-          `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/comments/${comment.id}.json?auth=${authCtx.token}`,
-          { method: "DELETE" }
-        ).then((res) => {
+        fetch(`${FIREBASE_COMMENTS}${comment.id}.json?auth=${authCtx.token}`, {
+          method: "DELETE",
+        }).then((res) => {
           if (res.ok) {
             refreshCommentsHandler();
             toast({
@@ -116,7 +118,7 @@ const PostCard = (props) => {
 
   const deletePostHandler = () => {
     fetch(
-      `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/posts/${props.id}.json?auth=${authCtx.token}`,
+      `${FIREBASE_POSTS}/${props.id}.json?auth=${authCtx.token}`,
       {
         method: "DELETE",
       }
@@ -127,7 +129,7 @@ const PostCard = (props) => {
         comments.map((comment) =>
           comment.postId === props.id
             ? fetch(
-                `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/comments/${comment.id}.json?auth=${authCtx.token}`,
+                `${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`,
                 { method: "DELETE" }
               )
             : ""
@@ -136,10 +138,9 @@ const PostCard = (props) => {
 
         likes.map((like) =>
           like.postId === props.id
-            ? fetch(
-                `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/likes/${like.id}.json?auth=${authCtx.token}`,
-                { method: "DELETE" }
-              )
+            ? fetch(`${FIREBASE_LIKES}/${like.id}.json?auth=${authCtx.token}`, {
+                method: "DELETE",
+              })
             : ""
         );
 
@@ -174,20 +175,17 @@ const PostCard = (props) => {
 
     if (enteredComment.trim().length >= 1) {
       if (enteredComment.trim().length <= maxChars) {
-        fetch(
-          `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/comments.json?auth=${authCtx.token}`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              comment: enteredComment,
-              commentUser: currentUser,
-              commentEmail: currentUserEmail,
-              commentDate: new Date(),
-              postId: props.id,
-            }),
-            headers: { "Content-Tpye": "application/json" },
-          }
-        ).then(refreshCommentsHandler);
+        fetch(`${FIREBASE_COMMENTS}.json?auth=${authCtx.token}`, {
+          method: "POST",
+          body: JSON.stringify({
+            comment: enteredComment,
+            commentUser: currentUser,
+            commentEmail: currentUserEmail,
+            commentDate: new Date(),
+            postId: props.id,
+          }),
+          headers: { "Content-Tpye": "application/json" },
+        }).then(refreshCommentsHandler);
       } else {
         toast({
           description: "Max characters exceeded.",
@@ -212,7 +210,7 @@ const PostCard = (props) => {
 
   useEffect(() => {
     fetch(
-      `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/comments.json?auth=${authCtx.token}`
+      `${FIREBASE_COMMENTS}.json?auth=${authCtx.token}`
     )
       .then((res) => {
         if (res.ok) {
@@ -237,9 +235,7 @@ const PostCard = (props) => {
 
     // fetch likes from DB
 
-    fetch(
-      `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/likes.json?auth=${authCtx.token}`
-    )
+    fetch(`${FIREBASE_LIKES}.json?auth=${authCtx.token}`)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -282,28 +278,26 @@ const PostCard = (props) => {
     authCtx.displayName,
     authCtx.token,
     props.id,
+    FIREBASE_LIKES,
+    FIREBASE_COMMENTS,
   ]);
 
   const likePostHandler = () => {
-    fetch(
-      `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/likes.json?auth=${authCtx.token}`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          likedBy: authCtx.displayName,
-          postId: props.id,
-        }),
-      }
-    ).then(refreshCommentsHandler);
+    fetch(`${FIREBASE_LIKES}.json?auth=${authCtx.token}`, {
+      method: "POST",
+      body: JSON.stringify({
+        likedBy: authCtx.displayName,
+        postId: props.id,
+      }),
+    }).then(refreshCommentsHandler);
   };
 
   const unlikePostHandler = () => {
     likes.find((like) => {
       if (like.likedBy === props.user)
-        fetch(
-          `https://foodie-bcff7-default-rtdb.europe-west1.firebasedatabase.app/likes/${like.id}.json?auth=${authCtx.token}`,
-          { method: "DELETE" }
-        ).then(refreshCommentsHandler);
+        fetch(`${FIREBASE_LIKES}/${like.id}.json?auth=${authCtx.token}`, {
+          method: "DELETE",
+        }).then(refreshCommentsHandler);
     });
   };
 
