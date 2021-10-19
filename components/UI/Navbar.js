@@ -67,7 +67,7 @@ const Navbar = () => {
           <Flex justify="center" align="center">
             <Image
               width="120"
-              height="45"
+              height="40"
               src={colorMode === "light" ? logo_black : logo_white}
               alt="foodie logo"
             ></Image>

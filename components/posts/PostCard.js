@@ -492,7 +492,7 @@ const PostCard = (props) => {
                     ))}
                 </List>
               </AccordionPanel>
-              {commentLength.length === 0 && (
+              {commentLength === 0 && (
                 <AccordionPanel>
                   <Text textAlign="center">
                     No comments. Be the first to comment!
