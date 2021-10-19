@@ -303,7 +303,13 @@ const PostCard = (props) => {
 
   return (
     <Flex justify="center">
-      <Box bg={themeColor} mb="4" borderRadius="lg" width="40%" boxShadow="lg">
+      <Box
+        bg={themeColor}
+        mb="4"
+        borderRadius="lg"
+        width={{ base: "90%", sm: "80%", md: "70%", lg: "50%" }}
+        boxShadow="lg"
+      >
         <Flex m="2" justify="space-between">
           <Box>
             <Flex>
