@@ -89,7 +89,14 @@ const Navbar = () => {
               )}
               {isLoggedIn && (
                 <ListItem mr="2">
-                  <Text fontSize="2xl">
+                  <Text
+                    fontSize={{
+                      base: "18px",
+                      sm: "20px",
+                      md: "24px",
+                      lg: "26px",
+                    }}
+                  >
                     {displayTimeHandler() + displayName}
                   </Text>
                 </ListItem>
