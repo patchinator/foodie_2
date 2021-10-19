@@ -24,7 +24,7 @@ import {
   AccordionItem,
   AccordionButton,
   Input,
-  Text,
+  IconButton
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { ChatIcon, PlusSquareIcon, LinkIcon } from "@chakra-ui/icons";
@@ -86,9 +86,14 @@ const PostForm = (props) => {
   return (
     <Fragment>
       <Container>
-        <Flex justify="center" align="center" pt="10" pb="10">
+        <Flex
+          justify="center"
+          align="center"
+          pt={{ base: "4", sm: "4", md: "6", lg: "8" }}
+          pb={{ base: "4", sm: "4", md: "6", lg: "8" }}
+        >
           <Box>
-            <Button onClick={onOpen}>Post</Button>
+            <Button onClick={onOpen} rightIcon={<ChatIcon />}>Post</Button>
           </Box>
         </Flex>
       </Container>
@@ -111,9 +116,9 @@ const PostForm = (props) => {
                 <FormHelperText>500 chars max</FormHelperText>
               </FormControl>
               <Flex flexDir="row-reverse">
-                <Button type="submit" rightIcon={<ChatIcon />}>
+                <IconButton type="submit" icon={<ChatIcon />}>
                   Post
-                </Button>
+                </IconButton>
               </Flex>
             </form>
           </ModalBody>

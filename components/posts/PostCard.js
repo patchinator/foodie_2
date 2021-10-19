@@ -307,7 +307,7 @@ const PostCard = (props) => {
         bg={themeColor}
         mb="4"
         borderRadius="lg"
-        width={{ base: "95%", sm: "80%", md: "70%", lg: "50%" }}
+        width={{ base: "100%", sm: "80%", md: "70%", lg: "50%" }}
         boxShadow="lg"
       >
         <Flex m="2" justify="space-between" align="center">
