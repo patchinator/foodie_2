@@ -77,7 +77,7 @@ const AuthForm = () => {
             data.displayName,
             expirationTime.toISOString()
           );
-          router.push("/");
+          router.push("/posts/");
         })
         .catch((error) => {
           toast({
