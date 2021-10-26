@@ -4,7 +4,6 @@ import PostForm from "../components/posts/PostForm";
 import Posts from "../components/posts/Posts";
 import AuthContext from "../store/auth-context";
 import { useToast } from "@chakra-ui/toast";
-import Background from "../styles/Background";
 import Welcome from "../components/UI/Welcome";
 
 export default function Home() {
@@ -62,10 +61,8 @@ export default function Home() {
       </Head>
       {!isLoggedIn && <Welcome />}
 
-      <Background>
-        {isLoggedIn && <PostForm onRefresh={refreshPostsHandler} />}
-        {isLoggedIn && <Posts onRefresh={refreshPostsHandler} posts={posts} />}
-      </Background>
+      {isLoggedIn && <PostForm onRefresh={refreshPostsHandler} />}
+      {isLoggedIn && <Posts onRefresh={refreshPostsHandler} posts={posts} />}
     </Fragment>
   );
 }
