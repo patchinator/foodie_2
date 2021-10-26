@@ -269,7 +269,7 @@ const PostCard = (props) => {
         // check if user has liked a post
 
         if (authCtx.isLoggedIn) {
-          const likedState = loadedLikes.some(
+          const likedState = loadedLikes.filter(
             (like) => like.likedBy === authCtx.displayName
           );
           setLiked(likedState);
@@ -308,7 +308,7 @@ const PostCard = (props) => {
 
   const unlikePostHandler = () => {
     likes.find((like) => {
-      if (like.likedBy === props.user)
+      if (like.likedBy === authCtx.displayName)
         fetch(`${FIREBASE_LIKES}/${like.id}.json?auth=${authCtx.token}`, {
           method: "DELETE",
         }).then(refreshCommentsHandler);
@@ -367,16 +367,12 @@ const PostCard = (props) => {
               {/* liked = like.likedBy === authCtx.displayName */}
               {/* likedPost = like.postId === props.id */}
 
-              {!liked && likedPost && (
-                <Button size="sm" onClick={likePostHandler}>
-                  like
-                </Button>
-              )}
-              {!likedPost && (
-                <Button size="sm" onClick={likePostHandler}>
-                  like
-                </Button>
-              )}
+              {(!liked && likedPost) ||
+                (likeLength === 0 && (
+                  <Button size="sm" onClick={likePostHandler}>
+                    like
+                  </Button>
+                ))}
               {liked && likedPost && (
                 <Button size="sm" onClick={unlikePostHandler}>
                   unlike
