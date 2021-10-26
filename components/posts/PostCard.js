@@ -132,20 +132,22 @@ const PostCard = (props) => {
   // delete posts from DB
 
   const deletePostHandler = () => {
+    let isMounted = true;
     fetch(`${FIREBASE_POSTS}/${props.id}.json?auth=${authCtx.token}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
-        // remove all comments associated with that post
+        if (isMounted)
+          // remove all comments associated with that post
 
-        comments.map((comment) =>
-          comment.postId === props.id
-            ? fetch(
-                `${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`,
-                { method: "DELETE" }
-              )
-            : ""
-        );
+          comments.map((comment) =>
+            comment.postId === props.id
+              ? fetch(
+                  `${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`,
+                  { method: "DELETE" }
+                )
+              : ""
+          );
         // remove all likes associated with that post
 
         likes.map((like) =>
@@ -175,6 +177,9 @@ const PostCard = (props) => {
         });
       }
     });
+    return () => {
+      isMounted = false;
+    };
   };
 
   // post comments to DB
