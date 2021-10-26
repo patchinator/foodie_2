@@ -92,51 +92,62 @@ const PostCard = (props) => {
   // delete comment from DB
 
   const deleteCommentHandler = () => {
+    let isMounted = true;
     comments.find((comment) => {
       if (comment.postId === props.id)
-      if (comment.commentUser === authCtx.displayName)
-        fetch(`${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`, {
-          method: "DELETE",
-        }).then((res) => {
-          if (res.ok) {
-            refreshCommentsHandler();
-            toast({
-              description: "Comment succesfully removed",
-              position: "top",
-              status: "success",
-              duration: 4000,
-              isClosable: true,
-            });
-          } else {
-            toast({
-              description: "Unable to remove comment",
-              position: "top",
-              status: "error",
-              duration: 4000,
-              isClosable: true,
-            });
-          }
-        });
+        if (comment.commentUser === authCtx.displayName)
+          fetch(
+            `${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`,
+            {
+              method: "DELETE",
+            }
+          ).then((res) => {
+            if (res.ok) {
+              if (isMounted) {
+                refreshCommentsHandler();
+                toast({
+                  description: "Comment succesfully removed",
+                  position: "top",
+                  status: "success",
+                  duration: 4000,
+                  isClosable: true,
+                });
+              }
+            } else {
+              toast({
+                description: "Unable to remove comment",
+                position: "top",
+                status: "error",
+                duration: 4000,
+                isClosable: true,
+              });
+            }
+          });
     });
+    return () => {
+      isMounted = false;
+    };
   };
 
   // delete posts from DB
 
   const deletePostHandler = () => {
+    let isMounted = true;
     fetch(`${FIREBASE_POSTS}/${props.id}.json?auth=${authCtx.token}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
-        // remove all comments associated with that post
+        if (isMounted)
+          // remove all comments associated with that post
 
-        comments.map((comment) =>
-          comment.postId === props.id
-            ? fetch(
-                `${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`,
-                { method: "DELETE" }
-              )
-            : ""
-        );
+          comments.map((comment) =>
+            comment.postId === props.id
+              ? fetch(
+                  `${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`,
+                  { method: "DELETE" }
+                )
+              : ""
+          );
         // remove all likes associated with that post
 
         likes.map((like) =>
@@ -166,6 +177,9 @@ const PostCard = (props) => {
         });
       }
     });
+    return () => {
+      isMounted = false;
+    };
   };
 
   // post comments to DB
@@ -260,7 +274,7 @@ const PostCard = (props) => {
         // check if user has liked a post
 
         if (authCtx.isLoggedIn) {
-          const likedState = loadedLikes.some(
+          const likedState = loadedLikes.filter(
             (like) => like.likedBy === authCtx.displayName
           );
           setLiked(likedState);
@@ -299,7 +313,7 @@ const PostCard = (props) => {
 
   const unlikePostHandler = () => {
     likes.find((like) => {
-      if (like.likedBy === props.user)
+      if (like.likedBy === authCtx.displayName)
         fetch(`${FIREBASE_LIKES}/${like.id}.json?auth=${authCtx.token}`, {
           method: "DELETE",
         }).then(refreshCommentsHandler);
@@ -358,16 +372,12 @@ const PostCard = (props) => {
               {/* liked = like.likedBy === authCtx.displayName */}
               {/* likedPost = like.postId === props.id */}
 
-              {!liked && likedPost && (
-                <Button size="sm" onClick={likePostHandler}>
-                  like
-                </Button>
-              )}
-              {!likedPost && (
-                <Button size="sm" onClick={likePostHandler}>
-                  like
-                </Button>
-              )}
+              {(!liked && likedPost) ||
+                (likeLength === 0 && (
+                  <Button size="sm" onClick={likePostHandler}>
+                    like
+                  </Button>
+                ))}
               {liked && likedPost && (
                 <Button size="sm" onClick={unlikePostHandler}>
                   unlike
@@ -381,7 +391,7 @@ const PostCard = (props) => {
               <Flex align="center">
                 {likeLength >= 1 && (
                   <Flex align="center">
-                    <Text mr="1">
+                    <Text mr="1" mt="1">
                       {likeLength} {likeLength === 1 ? "like" : "likes"}
                     </Text>
                     <StarIcon w="4" height="4" color="yellow.400" mr="2" />

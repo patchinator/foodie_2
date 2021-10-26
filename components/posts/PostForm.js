@@ -1,5 +1,6 @@
 import { Fragment, useRef, useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
+import Background from "../../styles/Background";
 
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import {
@@ -23,7 +24,7 @@ import {
   AccordionItem,
   AccordionButton,
   Input,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { ChatIcon, PlusSquareIcon, LinkIcon } from "@chakra-ui/icons";
@@ -83,17 +84,19 @@ const PostForm = (props) => {
   };
 
   return (
-    <Fragment>
-        <Flex
-          justify="center"
-          align="center"
-          pt={{ base: "4", sm: "4", md: "6", lg: "8" }}
-          pb={{ base: "4", sm: "4", md: "6", lg: "8" }}
-        >
-          <Box>
-            <Button onClick={onOpen} rightIcon={<ChatIcon />}>Post</Button>
-          </Box>
-        </Flex>
+    <Background>
+      <Flex
+        justify="center"
+        align="center"
+        pt={{ base: "4", sm: "4", md: "6", lg: "8" }}
+        pb={{ base: "4", sm: "4", md: "6", lg: "8" }}
+      >
+        <Box>
+          <Button onClick={onOpen} rightIcon={<ChatIcon />}>
+            Post
+          </Button>
+        </Box>
+      </Flex>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg={useColorModeValue("green.200", "gray.600")}>
@@ -166,7 +169,7 @@ const PostForm = (props) => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-    </Fragment>
+    </Background>
   );
 };
 
