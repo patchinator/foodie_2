@@ -92,32 +92,41 @@ const PostCard = (props) => {
   // delete comment from DB
 
   const deleteCommentHandler = () => {
+    let isMounted = true;
     comments.find((comment) => {
       if (comment.postId === props.id)
-      if (comment.commentUser === authCtx.displayName)
-        fetch(`${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`, {
-          method: "DELETE",
-        }).then((res) => {
-          if (res.ok) {
-            refreshCommentsHandler();
-            toast({
-              description: "Comment succesfully removed",
-              position: "top",
-              status: "success",
-              duration: 4000,
-              isClosable: true,
-            });
-          } else {
-            toast({
-              description: "Unable to remove comment",
-              position: "top",
-              status: "error",
-              duration: 4000,
-              isClosable: true,
-            });
-          }
-        });
+        if (comment.commentUser === authCtx.displayName)
+          fetch(
+            `${FIREBASE_COMMENTS}/${comment.id}.json?auth=${authCtx.token}`,
+            {
+              method: "DELETE",
+            }
+          ).then((res) => {
+            if (res.ok) {
+              if (isMounted) {
+                refreshCommentsHandler();
+                toast({
+                  description: "Comment succesfully removed",
+                  position: "top",
+                  status: "success",
+                  duration: 4000,
+                  isClosable: true,
+                });
+              }
+            } else {
+              toast({
+                description: "Unable to remove comment",
+                position: "top",
+                status: "error",
+                duration: 4000,
+                isClosable: true,
+              });
+            }
+          });
     });
+    return () => {
+      isMounted = false;
+    };
   };
 
   // delete posts from DB

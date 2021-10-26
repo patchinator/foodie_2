@@ -18,6 +18,7 @@ export default function PostsPage() {
   };
 
   useEffect(() => {
+    let isMounted = true;
     fetch(`${FIREBASE_DB_POSTS}${authCtx.token}`)
       .then((res) => {
         if (res.ok) {
@@ -27,18 +28,20 @@ export default function PostsPage() {
       })
       .then((data) => {
         const loadedPosts = [];
-        for (const key in data) {
-          loadedPosts.push({
-            user: data[key].user,
-            email: data[key].email,
-            post: data[key].post,
-            date: data[key].date,
-            image: data[key].image,
-            link: data[key].link,
-            id: key,
-          });
+        if (isMounted) {
+          for (const key in data) {
+            loadedPosts.push({
+              user: data[key].user,
+              email: data[key].email,
+              post: data[key].post,
+              date: data[key].date,
+              image: data[key].image,
+              link: data[key].link,
+              id: key,
+            });
+          }
+          setPosts(loadedPosts.reverse());
         }
-        setPosts(loadedPosts.reverse());
       })
       .catch((err) => {
         toast({
@@ -49,7 +52,11 @@ export default function PostsPage() {
           isClosable: true,
         });
       });
-  }, [refresh]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [refresh, authCtx.token, FIREBASE_DB_POSTS, toast]);
 
   return (
     <Fragment>
