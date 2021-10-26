@@ -391,7 +391,7 @@ const PostCard = (props) => {
               <Flex align="center">
                 {likeLength >= 1 && (
                   <Flex align="center">
-                    <Text mr="1">
+                    <Text mr="1" mt="1">
                       {likeLength} {likeLength === 1 ? "like" : "likes"}
                     </Text>
                     <StarIcon w="4" height="4" color="yellow.400" mr="2" />
